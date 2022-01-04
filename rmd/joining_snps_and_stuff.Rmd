@@ -1,0 +1,26 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+library(tidyverse)
+
+setwd("~/projects/covid_december/snps/")
+
+snps_from_grep<-read_tsv("december_vocs.txt")
+sample_descs<-read_tsv("../sample_annots.txt")
+voc_strains<-read_tsv("~/projects/voc_lister_code/voc_strain_table_mu_omicron_AY.txt") 
+
+
+snps_and_descs<-inner_join(sample_descs,
+           snps_from_grep,
+           sample=sample
+          )
+
+annotated_described_snps<-left_join(voc_strains,snps_and_descs,"positionrefalt"="positionrefalt")
+
+annotated_described_snps%>% write_tsv("annotated_dec_VOC.tsv")
+
+```
+

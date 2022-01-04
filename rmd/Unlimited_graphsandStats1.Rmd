@@ -1,0 +1,126 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by pressing *Cmd+Option+I*.
+
+
+```{r setup}
+library('tidyverse')
+# library(parallel)
+setwd("C:/users/aharr/Downloads/D3_Ohlab/dec")
+infiles <- dir(pattern='\\.unlimiteddepth$')
+dir<-getwd()
+anno<-read_tsv("covid.txt")
+# I don't know what the \\. is doing in this regex. Double escaping for the 
+# literal dot in the query? It works though. I reuse later.
+
+```
+Plain text in between is fine
+
+**but markdown format text is too**
+
+##make variable with directory and use paste0 to define where to save stuff
+
+
+```{r importing_a_water}
+setwd("C:/users/aharr/Downloads/D3_Ohlab/dec")
+
+infiles <- dir(pattern='\\.unlimiteddepth$')
+
+plottin_linear <- function(file){
+
+## Section for getting inputs
+
+  sample<-read_tsv(file,col_names = FALSE) %>% 
+  rename(genome=X1,pos=X2,depth=X3)
+
+covfile<-sub("\\.unlimiteddepth$",".cov", file)
+cov<-read_tsv(covfile,col_names=T) %>%
+   rename(genome='#rname')
+cov1<-dplyr::select(cov,genome,endpos,numreads) #%>%
+combinedfile<-left_join(anno,cov1,by='genome')
+
+baicStats<-sample %>%
+  group_by(genome) %>%
+  summarize(mean=mean(depth), median=median(depth))
+
+depthOf1<-filter(sample,depth >0) %>%
+  group_by(genome) %>%
+  summarize(Coveredby1=n())
+
+depthOf10<-filter(sample,depth>9) %>%
+  group_by(genome) %>%
+  summarize(Coveredby10=n())
+
+depthOf50<-filter(sample,depth>49) %>%
+  group_by(genome) %>%
+  summarize(Coveredby50=n())
+
+depthOf100<-filter(sample,depth>99) %>%
+  group_by(genome) %>%
+  summarize(Coveredby100=n())
+
+moreStats<-left_join(combinedfile,baicStats, by='genome') %>% 
+  left_join(depthOf1, by='genome') %>%
+  left_join(depthOf10, by='genome') %>%
+  left_join(depthOf50, by='genome') %>%
+  left_join(depthOf100, by='genome')
+moreStats[is.na(moreStats)] <- 0 # clever
+
+moreStats<-moreStats %>% mutate(coverage1x=Coveredby1/endpos) %>%
+  mutate(coverage10x=Coveredby10/endpos) %>%
+  mutate(coverage50x=Coveredby50/endpos) %>%
+  mutate(coverage100x=Coveredby100/endpos) %>% 
+  rename(length=endpos)
+
+
+tab_oot<-sub("\\.unlimiteddepth$","_stats.txt", file)
+write_tsv(moreStats,tab_oot)
+# 
+# ## Section for the coverage plots
+sars<-filter(sample,genome=='NC_045512.2')
+plot_me<-ggplot(sars, aes(x = pos, y = depth, color = file)) +
+  geom_line() +
+  scale_y_continuous(trans='sqrt')
+
+png_oot<-sub("\\.unlimiteddepth$",".png", file)
+ggsave(png_oot, plot = plot_me)
+plot_me
+
+  # NOTES: the rename function breaks on any empty depth file.
+  # Move all empty depth files somewhere else before running this.
+}
+
+```
+
+
+```{r run_that_fcn}
+setwd("C:/users/aharr/Downloads/D3_Ohlab/dec")
+
+lapply(infiles, plottin_linear)
+
+```
+
+
+anno<-read_tsv(file="covid.txt")
+  sample<-read_tsv(file="D3N06_S6.unlimiteddepth",col_names = FALSE) %>% 
+  rename(genome=X1,pos=X2,depth=X3)
+
+cov<-read_tsv(file="D3N06_S6.cov",col_names=T) %>%
+   rename(genome='#rname')
+   cov
+cov1<-dplyr::select(cov,genome,endpos,numreads) %>%
+combinedfile<-left_join(anno,cov1,by='genome')
+
+setwd("C:/users/aharr/Downloads/D3_Ohlab/flud3")
+anno<-read_tsv(file="genomeflu.txt")
+cov<-read_tsv(file="paragon-flu-primers.tab",col_names=T)
+combinedfile<-left_join(anno,cov,by='genome')
+write_tsv(combinedfile,file="stuff.txt")
+
+setwd("C:/users/aharr/Downloads/D3_Ohlab")
+sample_descs<-read_tsv("allparastatsagain.txt",col_names=T)
+sam<-read_tsv("2021_d4para_desc.txt",col_names=T)
+combinedfile<-inner_join(sam,sample_descs,sample=sample)
+write_csv(combinedfile,file="D4para_statsagain.csv")
