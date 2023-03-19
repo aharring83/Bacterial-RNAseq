@@ -10,7 +10,7 @@ Welcome!!! This is a brief introduction to RNA-seq analysis of prokaryotes. The 
 
 <a href="https://ibb.co/JjLkz3b"><img src="https://i.ibb.co/nM2kDPV/Screenshot-2023-03-19-155926.png" alt="Screenshot-2023-03-19-155926" border="0"></a>
 
-- We will be mapping our RNA-Seq data (transcripts) to the reference genome to determine which gene/s are over/under expressed for a particular condition/experiment. 
+- We will be mapping our RNA-Seq data (transcripts) to the reference genome to determine which gene/s are activated or repressed for a particular condition/experiment. 
 
 <a href="https://ibb.co/XfBMtL3"><img src="https://i.ibb.co/bjhDXm2/Screenshot-2023-03-19-161406.png" alt="Screenshot-2023-03-19-161406" border="0"></a>
 
