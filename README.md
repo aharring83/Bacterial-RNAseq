@@ -7,4 +7,4 @@ Welcome!!! This is a brief introduction to RNA-seq analysis of prokaryotes. The 
 # Brief overview of prokaryotic RNA-seq
 We will be doing a reference-based mapping of transcripts for analysis, so having a complete or close to complete genome is needed. We are going to be using a mostly complete genome of Streptococcus sinensis that was obtained by a hybrid assembly of two different sequencing technologies.
 
-![] (https://ibb.co/JjLkz3b)
+![alttext](https://ibb.co/JjLkz3b)
