@@ -5,13 +5,15 @@ Welcome!!! This is a brief introduction to RNA-seq analysis of prokaryotes. The 
 - The SRA numbers for RNA-seq data are: SRR11954369, SRR11954371, SRR11954372, SRR11954374
 - You can use fastq-dump or fasterq-dump to download the RNA-seq data.
 
-# Brief overview of prokaryotic RNA-seq
-- We will be doing a reference-based mapping of transcripts for analysis, so having a complete or close to complete genome is needed. We are going to be using a mostly complete genome of Streptococcus sinensis that was obtained by a hybrid assembly of two different sequencing technologies.
+# Brief overview of prokaryotic RNA-Seq
+- We will be doing a reference-based mapping of transcripts for analysis, so having a complete or close to complete genome is needed. The genome for this tutorial was created using a hybrid assembly of two different sequencing technologies.
 
 <a href="https://ibb.co/JjLkz3b"><img src="https://i.ibb.co/nM2kDPV/Screenshot-2023-03-19-155926.png" alt="Screenshot-2023-03-19-155926" border="0"></a>
 
-- We will be mapping our RNA-seq data (transcripts) to the reference genome to determine which gene/s are over/under expressed for a particular condition/experiment. 
+- We will be mapping our RNA-Seq data (transcripts) to the reference genome to determine which gene/s are over/under expressed for a particular condition/experiment. 
 
 <a href="https://ibb.co/XfBMtL3"><img src="https://i.ibb.co/bjhDXm2/Screenshot-2023-03-19-161406.png" alt="Screenshot-2023-03-19-161406" border="0"></a>
 
-- For this data, we will be comparing transcript data of 5 minute exposure to exogenous competence stimulating peptide versus 5 minute treatment in DMSO. The purpose of this experiment is to show that addition of exogenous competence stimulating peptide will activate the genes needed to competence activation, thus providing supporting evidence that the competence stimulating peptide regulates the competence phenotype.
+- For this data, we will be comparing transcript data of 5 minute exposure to exogenous competence stimulating peptide (CSP) versus 5 minute exposure DMSO. 
+- Exposure to  CSP represents the experimental condition while exposure to DMSO represents the control. 
+- The purpose of this experiment is to show that addition of exogenous competence stimulating peptide (CSP) will activate the genes needed to competence activation, thus providing supporting evidence that the competence stimulating peptide regulates the competence phenotype.
