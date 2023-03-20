@@ -14,6 +14,6 @@ Welcome!!! This is a brief introduction to RNA-seq analysis of prokaryotes. The 
 
 <a href="https://ibb.co/XfBMtL3"><img src="https://i.ibb.co/bjhDXm2/Screenshot-2023-03-19-161406.png" alt="Screenshot-2023-03-19-161406" border="0"></a>
 
-- For this data, we will be comparing transcript data of 5 minute exposure to exogenous competence stimulating peptide (CSP) versus 5 minute exposure DMSO. 
-- Exposure to  CSP represents the experimental condition while exposure to DMSO represents the control. 
-- The purpose of this experiment is to show that addition of exogenous competence stimulating peptide (CSP) will activate the genes needed to competence activation, thus providing supporting evidence that the competence stimulating peptide regulates the competence phenotype.
+- We will be comparing transcript data of 5 minute exposure to exogenous competence stimulating peptide (CSP) versus 5 minute exposure to DMSO. 
+- Experimental condition = 5 minute CSP exposure while the control = 5 minute exposure to DMSO. 
+- This study used RNA-Seq data to demonstrate that exogenous competence stimulating peptide (CSP) exposure will activate the genes involved in competence activation, thus providing supporting evidence that the competence stimulating peptide regulates the competence phenotype.
