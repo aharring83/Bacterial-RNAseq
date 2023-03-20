@@ -18,3 +18,9 @@ Welcome!!! This is a brief introduction to RNA-seq analysis of prokaryotes. The 
 - Experimental condition = 5 minute CSP exposure
 - Control condition = 5 minute exposure to DMSO. 
 - This study used RNA-Seq data to demonstrate that exogenous competence stimulating peptide (CSP) exposure will activate the genes involved in competence activation, thus providing supporting evidence that the competence stimulating peptide regulates the competence phenotype.
+
+# Packages/Software requirements
+- FastQC
+- fastp
+- bowtie2
+- R/Rstudio
