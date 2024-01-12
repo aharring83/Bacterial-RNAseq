@@ -24,3 +24,11 @@ Welcome!!! This is a brief introduction to RNA-seq analysis of prokaryotes. The 
 - fastp
 - bowtie2
 - R/Rstudio
+
+# Downloading data
+fasterq-dump -S SRR11954369
+fasterq-dump -S SRR11954371
+fasterq-dump -S SRR11954372
+fasterq-dump -S SRR11954374
+
+wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/019/090/945/GCF_019090945.2_ASM1909094v2/GCF_019090945.2_ASM1909094v2_genomic.fna.gz
