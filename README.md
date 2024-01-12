@@ -61,3 +61,10 @@ Go into the QC folder.
 multiqc .
 ```
 Now we can look at the multiqc_report.html to see whether is clean enough for downstream analysis.
+
+# Mapping trimmed reads to reference genome
+We need to create an index of our reference genome first. Go to the folder where the reference genome is located.
+```
+bowtie2-build GCA_019090945.2_ASM1909094v2_genomic.fna.gz ref
+```
+We create an index called ref, which we will use for mapping the reads.
