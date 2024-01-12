@@ -45,7 +45,19 @@ wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/019/090/945/GCF_019090945.2_AS
 ```
 
 # Quality control and trimming of raw data
+We need to zip the files first. Make a folder, "data" and move the fastq files to the data folder. Inside the data folder, zip the files. You can also create a bash script to streamline the process.
 ```
-fastp -i <SRR###_1> -I <SRR###_2> -o <SRR###_trim_1.fastq> -O <SRR###_trim_2.fastq>
+gzip *.fastq
 ```
-
+```
+fastp -i <SRR###_1> -I <SRR###_2> -o <SRR###_trim_1.fastq.gz> -O <SRR###_trim_2.fastq.gz>
+```
+Some people prefer to run fastqc on both the raw and trim reads. It is up to the analyst to decide how they want to proceed. I usually run fastqc on the trim reads. Make a folder, "QC". We will put the QC files in that folder.
+'''
+fastqc <trim_fastq.gz> -o QC
+'''
+Go into the QC folder.
+```
+multiqc .
+```
+Now we can look at the multiqc_report.html to see whether is clean enough for downstream analysis.
