@@ -26,9 +26,20 @@ Welcome!!! This is a brief introduction to RNA-seq analysis of prokaryotes. The 
 - R/Rstudio
 
 # Downloading data
+Commands for downloading the RNA-seq data.
+```
 fasterq-dump -S SRR11954369
+```
+```
 fasterq-dump -S SRR11954371
+```
+```
 fasterq-dump -S SRR11954372
+```
+```
 fasterq-dump -S SRR11954374
-
+```
+Command to download reference genome
+```
 wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/019/090/945/GCF_019090945.2_ASM1909094v2/GCF_019090945.2_ASM1909094v2_genomic.fna.gz
+```
