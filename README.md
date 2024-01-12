@@ -43,3 +43,9 @@ Command to download reference genome
 ```
 wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/019/090/945/GCF_019090945.2_ASM1909094v2/GCF_019090945.2_ASM1909094v2_genomic.fna.gz
 ```
+
+# Quality control and trimming of raw data
+```
+fastp -i <SRR###_1> -I <SRR###_2> -o <SRR###_trim_1.fastq> -O <SRR###_trim_2.fastq>
+```
+
