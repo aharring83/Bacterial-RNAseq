@@ -66,11 +66,23 @@ We are going to make a script to automate the trimming step where we will placin
 ```
 ```
 #!/bin/bash
-for read in *_1.fastq.gz
-mkdir trim
-do
-fastp -i $reads -I ${reads/_1.fastq.gz/_2.fastq.gz} -o /trim/${reads/_1.fastq.gz/_trim_1.fastq.gz> -O /trim/${reads/_1.fastq.gz/_trim_2.fastq.gz>
+
+# Create the output directory if it doesn't exist
+mkdir -p trim
+
+# Loop through each read file that matches the pattern *_1.fastq.gz
+for read in *_1.fastq.gz; do
+  # Generate the corresponding second read filename by replacing _1.fastq.gz with _2.fastq.gz
+  read2=${read/_1.fastq.gz/_2.fastq.gz}
+  
+  # Generate the output filenames for the trimmed reads
+  output1="trim/${read/_1.fastq.gz/_trim_1.fastq.gz}"
+  output2="trim/${read2/_2.fastq.gz/_trim_2.fastq.gz}"
+
+  # Run fastp with the input and output files
+  fastp -i "$read" -I "$read2" -o "$output1" -O "$output2"
 done
+
 ```
 Some people prefer to run fastqc on both the raw and trim reads. It is up to the analyst to decide how they want to proceed. I usually run fastqc on the trim reads. Here is a script that will create a folder called, "QC" and put the FastQC files in that folder.
 '''
