@@ -100,9 +100,54 @@ multiqc .
 Now we can look at the multiqc_report.html to see whether is clean enough for downstream analysis.
 
 # Mapping trimmed reads to reference genome
-We need to create an index of our reference genome first. Go to the folder where the reference genome is located.
+We need to create an index of our reference genome first. 
 ```
 cd ref
-bowtie2-build GCA_019090945.2_ASM1909094v2_genomic.fna.gz ref
+gunzip *.gz
+bowtie2-build GCF_019090945.2_ASM1909094v2_genomic.fna ref
+mkdir index
+mv *.bt2 index
+cd ..
 ```
-We created an index called ref, which we will use for mapping the reads.
+We created an index called ref that is stored in /ref/index. Now we will map the trim reads to the index and generate a sam file. Here is a script.
+```
+#!/bin/bash
+
+# Set the path to the bowtie2 index (without the .1.bt2 or other extensions)
+BOWTIE2_INDEX="/ref/index/ref"
+
+# Create the output directory if it doesn't exist
+mkdir -p alignments
+
+# Loop through each read file that matches the pattern *_trim_1.fastq.gz in the reads/trim directory
+for read1 in reads/trim/*_trim_1.fastq.gz; do
+  # Print the name of the file being processed
+  echo "Processing file: $read1"
+
+  # Check if the first read file exists
+  if [[ ! -f "$read1" ]]; then
+    echo "Error: Input file $read1 not found!"
+    continue
+  fi
+
+  # Generate the corresponding second read filename by replacing _trim_1.fastq.gz with _trim_2.fastq.gz
+  read2=${read1/_trim_1.fastq.gz/_trim_2.fastq.gz}
+  
+  # Check if the second read file exists
+  if [[ ! -f "$read2" ]]; then
+    echo "Error: Paired input file $read2 not found!"
+    continue
+  fi
+
+  # Generate the output SAM filename by extracting the base name and placing it in the alignments directory
+  base_name=$(basename "$read1" _trim_1.fastq.gz)
+  output="alignments/${base_name}.sam"
+
+  # Print the bowtie2 command being executed for debugging
+  echo "Running bowtie2: bowtie2 -x $BOWTIE2_INDEX -1 $read1 -2 $read2 -S $output --very-sensitive -p 8 --no-discordant"
+
+  # Run bowtie2 with the input files and the designated output file
+  bowtie2 -x "$BOWTIE2_INDEX" -1 "$read1" -2 "$read2" -S "$output" --very-sensitive -p 8 --no-discordant --end-to-end
+done
+```
+
