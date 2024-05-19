@@ -58,12 +58,12 @@ wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/019/090/945/GCA_019090945.2_AS
 We need to zip the files first. Make a folder, "data" and move the fastq files to the data folder. Inside the data folder, zip the files. You can also create a bash script to streamline the process.
 ```
 cd ../reads
-```
-```
 gzip *.fastq
 ```
+
 ```
 We are going to make a script to automate the trimming step where we will placing the fastp trimmed files in a folder called 'trim'. Remember to make the saved script executable using chmod +x <script_name.sh>
+```
 ```
 #!/bin/bash
 for read in *_R1.fastq.gz
@@ -93,4 +93,4 @@ We need to create an index of our reference genome first. Go to the folder where
 cd ref
 bowtie2-build GCA_019090945.2_ASM1909094v2_genomic.fna.gz ref
 ```
-We create an index called ref, which we will use for mapping the reads.
+We created an index called ref, which we will use for mapping the reads.
