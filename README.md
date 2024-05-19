@@ -28,33 +28,58 @@ Welcome!!! This is a brief introduction to RNA-seq analysis of prokaryotes. The 
 # Downloading data
 Commands for downloading the RNA-seq data.
 ```
-fasterq-dump -S SRR11954369
+mk reads
+cd reads
 ```
 ```
-fasterq-dump -S SRR11954371
+fasterq-dump -S SRR11954369 -o csp1
 ```
 ```
-fasterq-dump -S SRR11954372
+fasterq-dump -S SRR11954371 -o csp2
 ```
 ```
-fasterq-dump -S SRR11954374
+fasterq-dump -S SRR11954372 -o dmso1
+```
+```
+fasterq-dump -S SRR11954374 -o dmso2
 ```
 Command to download reference genome
 ```
+cd ..
+mkdir ref
+cd ref
+```
+```
 wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/019/090/945/GCF_019090945.2_ASM1909094v2/GCF_019090945.2_ASM1909094v2_genomic.fna.gz
+wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/019/090/945/GCA_019090945.2_ASM1909094v2/GCA_019090945.2_ASM1909094v2_genomic.gtf.gz
 ```
 
 # Quality control and trimming of raw data
 We need to zip the files first. Make a folder, "data" and move the fastq files to the data folder. Inside the data folder, zip the files. You can also create a bash script to streamline the process.
 ```
+cd ../reads
+```
+```
 gzip *.fastq
 ```
 ```
-fastp -i <SRR###_1> -I <SRR###_2> -o <SRR###_trim_1.fastq.gz> -O <SRR###_trim_2.fastq.gz>
+We are going to make a script to automate the trimming step where we will placing the fastp trimmed files in a folder called 'trim'. Remember to make the saved script executable using chmod +x <script_name.sh>
 ```
-Some people prefer to run fastqc on both the raw and trim reads. It is up to the analyst to decide how they want to proceed. I usually run fastqc on the trim reads. Make a folder, "QC". We will put the QC files in that folder.
+#!/bin/bash
+for read in *_R1.fastq.gz
+mkdir trim
+do
+fastp -i $reads -I ${reads/_R1.fastq.gz/_R2.fastq.gz} -o /trim/${reads/_R1.fastq.gz/_trim_1.fastq.gz> -O /trim/${reads/_R1.fastq.gz/_trim_2.fastq.gz>
+done
+```
+Some people prefer to run fastqc on both the raw and trim reads. It is up to the analyst to decide how they want to proceed. I usually run fastqc on the trim reads. Here is a script that will create a folder called, "QC" and put the FastQC files in that folder.
 '''
-fastqc <trim_fastq.gz> -o QC
+#!/bin/bash
+mkdir QC
+for i in /trim/*.fastq.gz
+do
+fastqc ${i} -o QC
+done
 '''
 Go into the QC folder.
 ```
@@ -65,6 +90,7 @@ Now we can look at the multiqc_report.html to see whether is clean enough for do
 # Mapping trimmed reads to reference genome
 We need to create an index of our reference genome first. Go to the folder where the reference genome is located.
 ```
+cd ref
 bowtie2-build GCA_019090945.2_ASM1909094v2_genomic.fna.gz ref
 ```
 We create an index called ref, which we will use for mapping the reads.
