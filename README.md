@@ -20,9 +20,12 @@ Welcome!!! This is a brief introduction to RNA-seq analysis of prokaryotes. The 
 - This study used RNA-Seq data to demonstrate that exogenous competence stimulating peptide (CSP) exposure will activate the genes involved in competence activation, thus providing supporting evidence that the competence stimulating peptide regulates the competence phenotype.
 
 # Packages/Software requirements
+- sra-tools
 - FastQC
+- MultiQC
 - fastp
 - bowtie2
+- subread
 - R/Rstudio
 
 # Downloading data
