@@ -160,36 +160,35 @@ We need to sort the bam files prior to counting reads against the reference usin
 ```
 #!/bin/bash
 
-# Paths to files and directories
-ANNOTATION_FILE="~/RNAseq/ref/GCA_019090945.2_ASM1909094v2_genomic.gtf"
+# Set the path to the annotation file and the directory containing the SAM files
+ANNOTATION_FILE="~/RNAseq/ref/GCF_019090945.2_ASM1909094v2_genomic.gtf"
 SAM_DIR="~/RNAseq/alignments"
 OUTPUT_DIR="~/RNAseq/featurecounts"
-BOWTIE2_INDEX="~/RNAseq/ref/index/ref"
 
-# Ensure annotation file exists
+# Check if the annotation file exists
 if [[ ! -f "$ANNOTATION_FILE" ]]; then
   echo "Error: Annotation file $ANNOTATION_FILE not found!"
   exit 1
 fi
 
-# Create output directories if they don't exist
+# Create the output directory if it doesn't exist
 mkdir -p "$OUTPUT_DIR"
 
-# Convert SAM to BAM, sort and index
-output_sam="$SAM_DIR/$(basename "$read1" _trim_1.fastq.gz).sam"
-sorted_bam="${output_sam%.sam}.sorted.bam"
-samtools view -bS "$output_sam" | samtools sort -o "$sorted_bam"
-samtools index "$sorted_bam"
+# Loop through each SAM file in the SAM directory
+for sam_file in "$SAM_DIR"/*.sam; do
+  # Sort the SAM file and generate the sorted BAM file name
+  #sorted_bam="${sam_file%.sam}.sorted.bam"
+  #samtools sort -o "$sorted_bam" "$sam_file"
 
-# Clean up intermediate SAM file to save space
-rm "$output_sam"
+  # Generate the output file name
+  base_name=$(basename "$sam_file" .bam)
+  output_file="${OUTPUT_DIR}/${base_name}_counts.txt"
 
-# Generate output filename for featureCounts
-base_name=$(basename "$sorted_bam" .sorted.bam)
-output_file="$OUTPUT_DIR/${base_name}_counts.txt"
+# Run featureCounts with no multimapping reads and in single-end mode
+  featureCounts -F gtf -a "$ANNOTATION_FILE" -o "$output_file" -g gene_id -T 8 -Q 20 -p "$sam_file" -B -M
 
-# Run featureCounts
-featureCounts -a "$ANNOTATION_FILE" -o "$output_file" -g gene_id -T 8 -p -v -M -B "$sorted_bam"
+  # Optionally, remove the intermediate sorted BAM file to save disk space
+  # rm "$sorted_bam"
 done
 ```
 Now we will have a count file and summary file for all the samples. Now we have to wrangle the count files before final analysis in R using DESeq2 and generate a volcano plot using EnhancedVolcano.
