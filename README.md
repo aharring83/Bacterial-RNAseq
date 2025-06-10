@@ -177,18 +177,18 @@ mkdir -p "$OUTPUT_DIR"
 # Loop through each SAM file in the SAM directory
 for sam_file in "$SAM_DIR"/*.sam; do
   # Sort the SAM file and generate the sorted BAM file name
-  #sorted_bam="${sam_file%.sam}.sorted.bam"
-  #samtools sort -o "$sorted_bam" "$sam_file"
+  sorted_bam="${sam_file%.sam}.sorted.bam"
+  samtools sort -o "$sorted_bam" "$sam_file"
 
   # Generate the output file name
   base_name=$(basename "$sam_file" .bam)
   output_file="${OUTPUT_DIR}/${base_name}_counts.txt"
 
 # Run featureCounts with no multimapping reads and in single-end mode
-  featureCounts -F gtf -a "$ANNOTATION_FILE" -o "$output_file" -g gene_id -T 8 -Q 20 -p "$sam_file" -B -M
+  featureCounts -F gtf -a "$ANNOTATION_FILE" -o "$output_file" -g gene_id -T 4 -Q 20 -p "$sam_file" -B -M
 
-  # Optionally, remove the intermediate sorted BAM file to save disk space
-  # rm "$sorted_bam"
+  # Remove the intermediate sorted BAM files to save disk space
+  rm "$sorted_bam"
 done
 ```
 Now we will have a count file and summary file for all the samples. Now we have to wrangle the count files before final analysis in R using DESeq2 and generate a volcano plot using EnhancedVolcano.
